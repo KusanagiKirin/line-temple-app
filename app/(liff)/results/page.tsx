@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { formatDistance } from "@/lib/distance";
 import Link from "next/link";
@@ -17,7 +17,7 @@ type Temple = {
   distance: number | null;
 };
 
-export default function ResultsPage() {
+function ResultsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [temples, setTemples] = useState<Temple[]>([]);
@@ -128,5 +128,18 @@ export default function ResultsPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function ResultsPage() {
+  return (
+    <Suspense fallback={
+      <div className="max-w-md mx-auto text-center py-16 text-stone-400">
+        <div className="text-3xl mb-2">🔍</div>
+        <p>読み込み中...</p>
+      </div>
+    }>
+      <ResultsContent />
+    </Suspense>
   );
 }
