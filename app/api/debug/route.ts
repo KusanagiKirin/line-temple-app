@@ -10,11 +10,11 @@ export async function GET() {
     const { PrismaClient } = await import("@/app/generated/prisma/client");
     const { PrismaLibSql } = await import("@prisma/adapter-libsql");
 
-    let url = dbUrl || "file:./dev.db";
+    let url = (dbUrl || "file:./dev.db").trim();
     let authToken: string | undefined;
     if (url.includes("?authToken=")) {
       const [base, query] = url.split("?");
-      authToken = new URLSearchParams(query).get("authToken") ?? undefined;
+      authToken = new URLSearchParams(query).get("authToken")?.trim() ?? undefined;
       url = base;
     }
 
