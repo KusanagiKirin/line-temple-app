@@ -18,11 +18,11 @@ const prisma = new PrismaClient({ adapter } as any);
 
 async function main() {
   // 管理者ユーザー作成
-  const hash = await bcrypt.hash("admin123", 10);
+  const hash = await bcrypt.hash("temple2026", 10);
   await prisma.adminUser.upsert({
-    where: { username: "admin" },
+    where: { username: "test" },
     update: {},
-    create: { username: "admin", passwordHash: hash },
+    create: { username: "test", passwordHash: hash },
   });
 
   // LIFF設定の初期値
@@ -150,7 +150,7 @@ async function main() {
   }
 
   console.log("✅ シードデータ投入完了");
-  console.log("   管理者: admin / admin123");
+  console.log("   管理者: test / temple2026");
   console.log("   お寺サンプル: 5件");
 }
 
