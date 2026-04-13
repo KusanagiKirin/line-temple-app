@@ -106,12 +106,11 @@ export default function TempleDetailPage() {
               <p className="text-sm text-stone-400 mt-1">{temple.prefecture} {temple.city}</p>
               {temple.address && <p className="text-sm text-stone-500">{temple.address}</p>}
             </div>
-            {distance !== null && (
-              <div className="text-right ml-3">
-                <p className="text-2xl font-bold text-emerald-600">{formatDistance(distance)}</p>
-                <p className="text-xs text-stone-400">現在地から</p>
-              </div>
-            )}
+            {/* スペースを常に確保してレイアウトシフトを防ぐ */}
+            <div className={`text-right ml-3 shrink-0 transition-opacity duration-300 ${distance === null ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
+              <p className="text-2xl font-bold text-emerald-600">{distance !== null ? formatDistance(distance) : "---"}</p>
+              <p className="text-xs text-stone-400">現在地から</p>
+            </div>
           </div>
         </div>
 
@@ -211,7 +210,7 @@ export default function TempleDetailPage() {
           </div>
         )}
 
-        <div className="h-4" />
+        <div className="h-12" />
       </div>
     </div>
   );
