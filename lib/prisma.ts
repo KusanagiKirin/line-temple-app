@@ -2,9 +2,19 @@ import { PrismaClient } from "@/app/generated/prisma/client";
 import { PrismaLibSql } from "@prisma/adapter-libsql";
 
 function createPrismaClient() {
-  const url = process.env.DATABASE_URL || "file:./dev.db";
+  const rawUrl = process.env.DATABASE_URL || "file:./dev.db";
+
+  let url = rawUrl;
+  let authToken: string | undefined;
+
+  if (rawUrl.includes("?authToken=")) {
+    const [base, query] = rawUrl.split("?");
+    authToken = new URLSearchParams(query).get("authToken") ?? undefined;
+    url = base;
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const adapter = new PrismaLibSql({ url } as any);
+  const adapter = new PrismaLibSql({ url, authToken } as any);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return new PrismaClient({ adapter } as any);
 }
