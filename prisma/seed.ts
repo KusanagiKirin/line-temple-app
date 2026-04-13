@@ -1,9 +1,18 @@
+import "dotenv/config";
 import { PrismaClient } from "../app/generated/prisma/client";
 import { PrismaLibSql } from "@prisma/adapter-libsql";
 import bcrypt from "bcryptjs";
 
+const rawUrl = (process.env.DATABASE_URL || "file:./dev.db").trim();
+let dbUrl = rawUrl;
+let authToken: string | undefined;
+if (rawUrl.includes("?authToken=")) {
+  const [base, query] = rawUrl.split("?");
+  authToken = new URLSearchParams(query).get("authToken")?.trim() ?? undefined;
+  dbUrl = base;
+}
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const adapter = new PrismaLibSql({ url: "file:./dev.db" } as any);
+const adapter = new PrismaLibSql({ url: dbUrl, authToken } as any);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const prisma = new PrismaClient({ adapter } as any);
 
