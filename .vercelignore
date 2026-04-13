@@ -1,0 +1,13 @@
+# Local env files — use Vercel Dashboard env vars instead
+.env
+.env.local
+.env.development
+.env.production
+
+# Local DB
+*.db
+*.db-shm
+*.db-wal
+
+# Scripts (not needed at runtime)
+scripts/
