@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Temple {
+  id                 String   @id @default(cuid())
+  name               String
+  prefecture         String   @default("大阪府")
+  city               String
+  address            String?
+  lat                Float
+  lng                Float
+  phone              String?
+  googleMapUrl       String?
+  receptionType      String   @default("none") // always | occasional | none
+  receptionNote      String?
+  hasGoshuin         Boolean  @default(false)
+  goshuinNote        String?
+  goshuinImages      String?  // JSON array of image URLs
+  hasParking         Boolean  @default(false)
+  parkingNote        String?
+  hasOmamori         Boolean  @default(false)
+  receptionHours     String?
+  receptionHoursNote String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
